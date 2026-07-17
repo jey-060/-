@@ -1,0 +1,41 @@
+old-15
+javascript로 무력화 시키는 설정이 되어있다.
+chrome://settings/content/javascript에서 java허용을 끄면 된다.
+그렇게 본 코드
+alert("Access_Denied");
+location.href='/';
+document.write("<a href=?getFlag>[Get Flag]</a>");
+
+href는 <a> 태그 내에서 링크의 목적지 주소(URL)를 지정하는 속성이다. 3번째 줄이 실행되면 ?getFlag위치에 이동되는것이다. 상대주소이기에 원래주소 뒤에 그대로 붙여주어도 된다.
+
+답: https://webhacking.kr/challenge/js-2/?getFlag
+
+old-10
+goal이 left 1600이길래 this.style.left을 바꿔보았지만 풀리지 않았다.
+href이 바뀌는 부분이 있길래 ?go=’1600px’ 넣어보았다. no hack이라고 뜬다.
+누르면 옮기게 만드는 코드의 이동값을 1599로 만들고 누르면 풀린다.
+
+답: this.style.left=parseInt(this.style.left,10)+1599+'px';if(this.style.left=='1600px')this.href='?go='+this.style.left
+
+old-54
+들어가면 문자가 빠르게 지나간다.
+출력하는 함수가 있으니 timeout을 길게 설정해(if(x.responseText) setTimeout("answer("+i+")",8000);) console로 답을 느리게 출력하도록 하였다.
+
+
+나중에는 한번에 답 보이게도 만들었다.
+var y = '';
+function answer(i){
+x.open('GET','?m='+i,false);
+x.send(null);
+
+if(x.responseText){
+    y += x.responseText;
+    setTimeout(function(){ answer(i+1); }, 100);
+} else {
+    console.log("와",y);
+    aview.innerHTML = y;
+}
+}
+setTimeout(function(){ answer(0); }, 1000);
+
+답:FLAG{a7981201c48d0ece288afd01ca43c55b}
