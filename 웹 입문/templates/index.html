@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>안녕하세요</title></head>
+    <link rel="stylesheet" href="../static/style.css">
+<body>
+    <h1>길러본 것들</h1>
+    <button id="fly-btn">우왕</button>
+    <section>
+        <h2 id="moving">장수풍뎅이</h2>
+        
+        <h3>키우기 쉽다.</h3>
+        <a href="https://ko.wikipedia.org/wiki/%EC%9E%A5%EC%88%98%ED%92%8D%EB%8E%85%EC%9D%B4">위키백과</a>
+        <dl>
+            <dt>엄청나게 증식해서 주변에 알을 나눠줬다.</dt>
+        </dl>
+    </section>
+    
+    <hr />
+    <section>
+        <h2>사슴벌레</h2>
+        <h3>키우기 어렵다.</h3>
+        <a href="https://ko.wikipedia.org/wiki/%EC%82%AC%EC%8A%B4%EB%B2%8C%EB%A0%88">위키백과</a>
+        <dl>
+            <dd>분명 열심히 보살폈는데 알을 낳지 않았다.</dd>
+        </dl>
+    </section>
+    <section>
+        <div class="멍멍">
+            <h4>개</h4>
+            <pre>귀엽다.</pre>
+            <p>개(학명: Canis lupus familiaris)는 중형 동물이자 가장 널리 분포하며 개체 수가 가장 많은 지상 동물 중 하나이며 가축화된 회색늑대이다. 개는 인류가 최초로 가축으로 삼은 동물로 알려져 있으며, 역사적으로 반려견, 사냥견으로서 길러 왔다.        <a href="https://ko.wikipedia.org/wiki/%EA%B0%9C">출처</a></p>
+        </div>
+    </section>
+    <ol>
+        <li class="mutgim">그리고</li>
+        <li class="mutgim">아마</li>
+        <li class="mutgim">병아리도</li>
+        <li class="mutgim">잠깐</li>
+        <li class="mutgim">길렀다.</li>
+    </ol>
+    <form action="/search" method="get" class="연습">
+        <label for="animal">당신이 기른 동물은?</label>
+        <input type="text" name="animal" id="animal" required placeholder="예: 장수풍뎅이" />
+        <button type="submit">위키백과 주소 만들기</button>
+    </form>
+
+    {% if wikipedia_url %}
+    <div style="margin: 20px 0; padding: 10px; border: 1px solid #ddd; background-color: #f9f9f9; text-align: center;">
+        <h3>동물: {{ animal_name }}</h3>
+        <code>{{ wikipedia_url }}</code><br><br>
+        <a href="{{ wikipedia_url }}" target="_blank" style="padding: 5px 10px; background-color: #f0f0f0; border-radius: 5px; text-decoration: none; color: #333;">바로가기</a>
+    </div>
+    {% endif %}
+
+    <hr>
+
+    <form action="/add_trait" method="post" class="연습2">
+        <label for="trait">어떤 특징이 있습니까?</label>
+        <input type="text" name="trait" id="trait" required placeholder="예: 엄청나게 증식한다" />
+        <button type="submit" class="wa">특징 등록</button>
+    </form>
+
+    <div style="margin-top: 20px; text-align: center;">
+        <h3>동물 특징 리스트</h3>
+        <ul style="display: inline-block; text-align: left; list-style: circle;">
+            {% if traits_list %}
+                {% for trait in traits_list %}
+                    <li>{{ trait }}</li>
+                {% endfor %}
+            {% else %}
+                <li style="color: #d30259;">아직 등록된 특징이 없습니다.</li>
+            {% endif %}
+        </ul>
+    </div>
+    <script src="../static/script.js"></script>
+
+
+
+</body>
+</html>
