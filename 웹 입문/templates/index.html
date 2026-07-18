@@ -40,34 +40,101 @@
         <li class="mutgim">잠깐</li>
         <li class="mutgim">길렀다.</li>
     </ol>
-    <form action="/search" method="get" class="연습">
+    <form action="/search" method="get" id="연습">
         <label for="animal">당신이 기른 동물은?</label>
         <input type="text" name="animal" id="animal" required placeholder="예: 장수풍뎅이" />
+        <div id="errorMessage" style="color: red; font-size: 13px; min-height: 18px; margin-bottom: 10px;"></div>
+
         <button type="submit">위키백과 주소 만들기</button>
     </form>
+    <script>
+    document.getElementById('연습').addEventListener('submit', function(event) {
+    const textInput = document.getElementById('animal');
+    const errorSpan = document.getElementById('errorMessage');
+    const textValue = textInput.value;
+
+    const allowedPattern = /^[a-zA-Z0-9가-힣]+$/;
+
+    if (textValue.length > 0 && !allowedPattern.test(textValue)) {
+        event.preventDefault(); 
+        
+        errorSpan.innerText = "특수문자는 입력할 수 없습니다.";
+        
+        textInput.style.borderColor = "red";
+        
+    } else {
+        errorSpan.innerText = "";
+        textInput.style.borderColor = "";
+    }
+    });
+    </script>
 
     {% if wikipedia_url %}
-    <div style="margin: 20px 0; padding: 10px; border: 1px solid #ddd; background-color: #f9f9f9; text-align: center;">
+    <div id="wiki" style="margin: 20px 0; padding: 10px; border: 1px solid #ddd; background-color: #f9f9f9; text-align: center;">
         <h3>동물: {{ animal_name }}</h3>
         <code>{{ wikipedia_url }}</code><br><br>
         <a href="{{ wikipedia_url }}" target="_blank" style="padding: 5px 10px; background-color: #f0f0f0; border-radius: 5px; text-decoration: none; color: #333;">바로가기</a>
     </div>
-    {% endif %}
+    <script>
+    window.addEventListener('DOMContentLoaded', function() {
+        const resultBox = document.getElementById('wiki');
+    if (resultBox) {
+        resultBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+});
+</script>
+{% endif %}
 
     <hr>
 
-    <form action="/add_trait" method="post" class="연습2">
+    <form action="/add_trait" method="post" id="연습2">
         <label for="trait">어떤 특징이 있습니까?</label>
         <input type="text" name="trait" id="trait" required placeholder="예: 엄청나게 증식한다" />
+        <div id="errorMessage" style="color: red; font-size: 13px; min-height: 18px; margin-bottom: 10px;"></div>
+
         <button type="submit" class="wa">특징 등록</button>
     </form>
+    <script>
+window.addEventListener('DOMContentLoaded', function() {
+    const totalCount = "{{ traits_list|length }}";
+    
+    if (totalCount > 0) {
+        const lastTrait = document.getElementById('trait-' + totalCount);
+        
+        if (lastTrait) {
+            lastTrait.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    }
+});
+</script>
+    <script>
+    document.getElementById('연습2').addEventListener('submit', function(event) {
+        const textInput = document.getElementById('trait');
+        const errorSpan = document.getElementById('errorMessage');
+        const textValue = textInput.value;
+
+    const allowedPattern = /^[a-zA-Z0-9가-힣\s]+$/;
+
+    if (textValue.length > 0 && !allowedPattern.test(textValue)) {
+        
+        event.preventDefault(); 
+        errorSpan.innerText = "특수문자는 입력할 수 없습니다. (공백은 가능)";
+        
+        textInput.style.borderColor = "red";
+        
+    } else {
+        errorSpan.innerText = "";
+        textInput.style.borderColor = "";
+    }
+});
+</script>
 
     <div style="margin-top: 20px; text-align: center;">
-        <h3>동물 특징 리스트</h3>
+        <p class="trait_list">동물 특징 리스트</p>
         <ul style="display: inline-block; text-align: left; list-style: circle;">
             {% if traits_list %}
                 {% for trait in traits_list %}
-                    <li>{{ trait }}</li>
+                    <li id="trait-{{ loop.index }}">{{ trait }}</li>
                 {% endfor %}
             {% else %}
                 <li style="color: #d30259;">아직 등록된 특징이 없습니다.</li>

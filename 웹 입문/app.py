@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 import urllib.parse
+import re
 
 app = Flask(__name__)
 
@@ -12,7 +13,6 @@ def index():
 @app.route('/search', methods=['GET'])
 def search_wikipedia():
     animal_name = request.args.get('animal')
-    
     if animal_name:
         base_url = "https://ko.wikipedia.org/wiki/"
         encoded_name = urllib.parse.quote(animal_name)
